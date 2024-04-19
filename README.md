@@ -16,7 +16,7 @@ $ sudo make install
 ## Configuration
 
 ```
-auth sufficient pam_oauth2.so <tokeninfo url> <login field> [POST] [:<Authz payload>] key1=value2 key2=value2
+auth sufficient pam_oauth2.so <tokeninfo url> <login field> [POST] [:[<Authz scheme>:]<Authz parameters>] key1=value2 key2=value2
 account sufficient pam_oauth2.so
 ```
 
@@ -24,8 +24,10 @@ Optional parameter `POST` indicates to use POST method when sending request to t
 `Content-Type: application/x-www-form-urlencoded` header and moves CGI parameters from `<tokeninfo url>` into request body.
 If this parameter is omitted, the GET method is used.
 
-Optional parameter `:<Authz payload>` specify a payload for `Authorization` HTTP header, e.g. `:dXNlcjpwYXNzd29yZA==` will result 
-in `Authorization: Basic dXNlcjpwYXNzd29yZA==` header to be added. If this parameter is omitted, no `Authorization` header is added.
+Optional parameter `:[<Authz scheme>:]<Authz parameters>` specify a field value for `Authorization` HTTP header to be sent along with `<tokeninfo url>`. If authorisation scheme `<Authz scheme>` is omitted, the Basic authorisation scheme is used. Examples:
+- `:dXNlcjpwYXNzd29yZA==` will result in `Authorization: Basic dXNlcjpwYXNzd29yZA==` header to be added;
+- `:Bearer:mF_9.B5f-4.1JqM` will result in `Authorization: Bearer mF_9.B5f-4.1JqM` header to be added.
+If this parameter is omitted, no `Authorization` header is added.
 
 ## How it works
 
@@ -72,7 +74,7 @@ auth sufficient pam_oauth2.so http://keycloak.local:8080/realm/master/protocol/o
 account sufficient pam_oauth2.so http://keycloak.local:8080/realm/master/protocol/openid-connect/token/introspect?token= client_id POST :Y2xpZW50X2lkOnNlY3JldA==
 ```
 
-*Hint:* you can use the following command to obtain authorisation payload from values of `client_id` and `secret`:
+*Hint:* you can use the following command to obtain authorisation parameter from values of `client_id` and `secret`:
 
 ```
 echo -n <client_id>:<secret> | base64
