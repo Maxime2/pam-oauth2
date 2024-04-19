@@ -27,6 +27,7 @@ If this parameter is omitted, the GET method is used.
 Optional parameter `:[<Authz scheme>:]<Authz parameters>` specify a field value for `Authorization` HTTP header to be sent along with `<tokeninfo url>`. If authorisation scheme `<Authz scheme>` is omitted, the Basic authorisation scheme is used. Examples:
 - `:dXNlcjpwYXNzd29yZA==` will result in `Authorization: Basic dXNlcjpwYXNzd29yZA==` header to be added;
 - `:Bearer:mF_9.B5f-4.1JqM` will result in `Authorization: Bearer mF_9.B5f-4.1JqM` header to be added.
+
 If this parameter is omitted, no `Authorization` header is added.
 
 ## How it works
